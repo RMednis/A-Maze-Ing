@@ -17,7 +17,7 @@ public class LabyrinthClass {
 
     public static void GenerateLabyrinth(int number) {
         if(number == 1) {
-            //Complete Random
+            //Complete Random (when there is no logic)
             for(int i = 0; i < rindas; i++) {
                 for(int j = 0; j < kolonnas; j++) {
                     array[i][j] = rand.nextInt(2);
@@ -25,31 +25,14 @@ public class LabyrinthClass {
             }
         }
         else if (number == 2) {
-            // Structured Random
+            // Structured Random (when there is logic)
             RandomFill(array);
         }
     }
 
+    // For Daniil to implement
     public static void RandomFill(int[][] arrayToFill) {
-        boolean insideMaze = true;
-        Point currentCell = new Point(0, 0);
-        int numberOfAvailablePaths = 0;
-        int direction = 0; //1 - left, 2 - up, 3- right, 4 - down
-        while (insideMaze) {
-            if(array[currentCell.x][currentCell.y] == 0) {
-                // Situation, when point is near the border
-                if(currentCell.x != 0 || currentCell.x != rindas-1 || currentCell.y != 0 || currentCell.y != kolonnas-1) {
-                    numberOfAvailablePaths = 3;
-                }
-                // Situation, when point is near the border
-                else {
-                    numberOfAvailablePaths = 2;
-                }
-
-            }
-            else if(currentCell.x == rindas-1 && currentCell.y == kolonnas-1) {
-                insideMaze = false;
-            }
+        
         }
     }
 }
