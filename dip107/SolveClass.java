@@ -316,7 +316,7 @@ public class SolveClass {
     *  If there is no more available paths to go, return to the previous intersection of multiple paths.
     *  Register the tried paths to use this information and choose other path. 
     */
-    private static void RealLifeApproachSolve(int[][] arrayToSolve) {
+    public static void RealLifeApproachSolve(int[][] arrayToSolve) {
 
     }
 }
