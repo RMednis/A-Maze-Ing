@@ -1,6 +1,7 @@
 package dip107;
 
 import dip107.LabyrinthClass;
+import dip107.SolveClass;
 import java.util.Scanner;
 
 public class Main {
@@ -92,9 +93,11 @@ public class Main {
             System.exit(1);
         }
 
+        System.out.println("results:");
+
         switch(methodNum) {
             case 1:
-
+                SolveClass.RandomSolve(LabyrinthClass.array);
                 break;
             case 2:
 
@@ -107,7 +110,5 @@ public class Main {
                 System.exit(1);
                 break;
         }
-
-        System.out.println("results:");
     }
 }
