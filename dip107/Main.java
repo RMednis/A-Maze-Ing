@@ -1,7 +1,6 @@
 package dip107;
 
-import dip107.LabyrinthClass;
-import dip107.SolveClass;
+import dip107.*;
 import java.util.Scanner;
 
 public class Main {
@@ -48,13 +47,9 @@ public class Main {
 
         if(answer == 'n') {
             for(int i = 0; i < r; i++) {
-                System.out.printf("%d# row numbers: ", i+1);
                 for(int j = 0; j < k; j++) {
                     if(sc.hasNextInt()) {
-                        LabyrinthClass.array[i][j] = sc.nextInt();
-                        if(j == k-1) {
-                            System.out.print("\n");
-                        }
+                        LabyrinthClass.array[i][j] = sc.nextInt();   
                     }
                     else {
                         System.out.println("input error");
@@ -62,23 +57,27 @@ public class Main {
                     }
                 }
             }
+            // Setting up start and ending
+            LabyrinthClass.array[0][0] = 0;
+            LabyrinthClass.array[r-1][k-1] = 0;
         }
+
         else if (answer == 'y') {
             LabyrinthClass.GenerateLabyrinth(1);
-        }
 
-        // Setting up start and ending
-        LabyrinthClass.array[0][0] = 0;
-        LabyrinthClass.array[r-1][k-1] = 0;
+            // Setting up start and ending
+            LabyrinthClass.array[0][0] = 0;
+            LabyrinthClass.array[r-1][k-1] = 0;
 
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < k; j++) {
-                System.out.print(LabyrinthClass.array[i][j]);
-                if (j == k-1) {
-                    System.out.print("\n");
-                    continue;
+            for(int i = 0; i < r; i++) {
+                for(int j = 0; j < k; j++) {
+                    System.out.print(LabyrinthClass.array[i][j]);
+                    if (j == k-1) {
+                        System.out.print("\n");
+                        continue;
+                    }
+                    System.out.print(" ");
                 }
-                System.out.print("\t");
             }
         }
 
@@ -100,7 +99,7 @@ public class Main {
                 SolveClass.RandomSolve(LabyrinthClass.array);
                 break;
             case 2:
-
+                SolveClass.TryOutEverythingSolve(LabyrinthClass.array);
                 break;
             case 3:
 
