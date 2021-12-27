@@ -9,7 +9,7 @@ public class SolveClass {
     /* TO DO: Create an algorithm which takes the path of zeros upon encountering the dead-end.
     *  When encountering a multiple paths, randomly choose the path that will be taken.
     *  Reset from (0, 0), if there is no more available paths to go (no zeros near, not end of the maze, dead-end encountered). */
-    public static void RandomSolve(int[][] arrayToSolve) {
+    public void RandomSolve(int[][] arrayToSolve) {
         int tries = 0;
         boolean mazeReseted = false;
         boolean insideMaze = true;
@@ -29,7 +29,7 @@ public class SolveClass {
         }
 
         // Create a variable to store a path
-        path = "(" + currentPos.x + "," + currentPos.y + ") ";
+        path = "(" + currentPos.y + "," + currentPos.x + ") ";
 
         // Go through loop while point is inside the maze
         while(insideMaze) {
@@ -78,7 +78,7 @@ public class SolveClass {
             }
             // If there is no paths to go and maze has been reseted many times (multiplication between width and height), exit the maze (no exit found)
             else if ((availableDirections[0] == false && availableDirections[1] == false && availableDirections[2] == false && availableDirections[3] == false) && 
-            tries > arrayToSolve[0].length * arrayToSolve.length) {
+            tries > arrayToSolve[0].length) {
                 System.out.println("There is no exit");
                 return;
             }
@@ -146,7 +146,7 @@ public class SolveClass {
     *  When encountering a multiple paths, randomly choose the path that will be taken.
     *  Reset from (0, 0), if there is no more available paths to go.
     *  Use received information about failed paths and choose other path to go randomly. */
-    public static void TryOutEverythingSolve(int[][] arrayToSolve) {
+    public void TryOutEverythingSolve(int[][] arrayToSolve) {
         int tries = 0;
         int pathsToGo = 0;
         boolean mazeReseted = false;
@@ -316,7 +316,7 @@ public class SolveClass {
     *  If there is no more available paths to go, return to the previous intersection of multiple paths.
     *  Register the tried paths to use this information and choose other path. 
     */
-    public static void RealLifeApproachSolve(int[][] arrayToSolve) {
-
+    public void RealLifeApproachSolve(int[][] arrayToSolve) {
+        System.out.println("Well not implemented");
     }
 }
