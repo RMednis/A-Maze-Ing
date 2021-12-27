@@ -44,12 +44,13 @@ public class Main {
         }
 
         LabyrinthClass labyrinth = new LabyrinthClass(r, k);
+        SolveClass solver = new SolveClass();
 
         if(answer == 'n') {
             for(int i = 0; i < r; i++) {
                 for(int j = 0; j < k; j++) {
                     if(sc.hasNextInt()) {
-                        LabyrinthClass.array[i][j] = sc.nextInt();   
+                        labyrinth.array[i][j] = sc.nextInt();   
                     }
                     else {
                         System.out.println("input error");
@@ -58,20 +59,41 @@ public class Main {
                 }
             }
             // Setting up start and ending
-            LabyrinthClass.array[0][0] = 0;
-            LabyrinthClass.array[r-1][k-1] = 0;
+            labyrinth.array[0][0] = 0;
+            labyrinth.array[r-1][k-1] = 0;
         }
 
         else if (answer == 'y') {
-            LabyrinthClass.GenerateLabyrinth(1);
+            int methodNum = 0;
+            System.out.print("generate method number (1-2): ");
+
+            if (sc.hasNextInt()) {
+                methodNum = sc.nextInt();
+            }
+            else {
+                System.out.println("input error");
+                System.exit(1);
+            }
+
+            switch(methodNum) {
+                case 1:
+                    labyrinth.GenerateLabyrinth(1);
+                    break;
+                case 2:
+                    labyrinth.GenerateLabyrinth(2);
+                    break;
+                default:
+                    System.out.println("input error");
+                    System.exit(1);
+            }
 
             // Setting up start and ending
-            LabyrinthClass.array[0][0] = 0;
-            LabyrinthClass.array[r-1][k-1] = 0;
+            labyrinth.array[0][0] = 0;
+            labyrinth.array[r-1][k-1] = 0;
 
             for(int i = 0; i < r; i++) {
                 for(int j = 0; j < k; j++) {
-                    System.out.print(LabyrinthClass.array[i][j]);
+                    System.out.print(labyrinth.array[i][j]);
                     if (j == k-1) {
                         System.out.print("\n");
                         continue;
@@ -96,13 +118,13 @@ public class Main {
 
         switch(methodNum) {
             case 1:
-                SolveClass.RandomSolve(LabyrinthClass.array);
+                solver.RandomSolve(labyrinth.array);
                 break;
             case 2:
-                SolveClass.TryOutEverythingSolve(LabyrinthClass.array);
+                solver.TryOutEverythingSolve(labyrinth.array);
                 break;
             case 3:
-
+                solver.RealLifeApproachSolve(labyrinth.array);
                 break;
             default:
                 System.out.println("input error");
