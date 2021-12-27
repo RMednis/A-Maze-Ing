@@ -25,7 +25,7 @@ public class LabyrinthClass {
             }
         }
         else if (number == 2) {
-            // Structured Random (when there is logic)
+            // Randomed Logic
             RandomFill(array);
         }
     }
