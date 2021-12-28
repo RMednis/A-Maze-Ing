@@ -24,3 +24,7 @@ hs_err_pid*
 
 # Output Files
 /out/
+
+# IDEA configuration files
+/.idea/
+*.iml
