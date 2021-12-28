@@ -7,7 +7,7 @@ public class LabyrinthClass {
     public int rindas;
     public int kolonnas;
 
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
     
     public LabyrinthClass(int r, int k) {
         rindas = r;
