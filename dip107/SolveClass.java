@@ -6,7 +6,7 @@ import java.util.Random;
 public class SolveClass {
     private static Random rand = new Random();
     // For everyone to dive into
-    /* TO DO: Create an algorithm which takes the path of zeros upon encountering the dead-end.
+    /* TODO: Create an algorithm which takes the path of zeros upon encountering the dead-end.
     *  When encountering a multiple paths, randomly choose the path that will be taken.
     *  Reset from (0, 0), if there is no more available paths to go (no zeros near, not end of the maze, dead-end encountered). */
     public void RandomSolve(int[][] arrayToSolve) {
@@ -23,9 +23,7 @@ public class SolveClass {
         
         // Storing original values in backup array
         for (int i = 0; i < arrayToSolve.length; i++) {
-            for (int j = 0; j < arrayToSolve[0].length; j++) {
-                backupArray[i][j] = arrayToSolve[i][j];
-            }
+            System.arraycopy(arrayToSolve[i], 0, backupArray[i], 0, arrayToSolve[0].length);
         }
 
         // Create a variable to store a path
@@ -62,36 +60,33 @@ public class SolveClass {
                 }
             }
 
+            boolean stuck = !availableDirections[0] && !availableDirections[1] && !availableDirections[2] && !availableDirections[3];
             // If there is no paths to go, reset the position, reset the maze and increment the tries
-            if ((availableDirections[0] == false && availableDirections[1] == false && availableDirections[2] == false && availableDirections[3] == false) &&
-            tries <= arrayToSolve[0].length * arrayToSolve.length) {
+            if (stuck && tries <= arrayToSolve[0].length * arrayToSolve.length) {
                 mazeReseted = true;
                 currentPos.x = 0;
                 currentPos.y = 0;
                 path = "(" + currentPos.y + "," + currentPos.x + ") ";
                 tries++;
                 for (int i = 0; i < arrayToSolve.length; i++) {
-                    for (int j = 0; j < arrayToSolve[0].length; j++) {
-                        arrayToSolve[i][j] = backupArray[i][j];
-                    }
+                    System.arraycopy(backupArray[i], 0, arrayToSolve[i], 0, arrayToSolve[0].length);
                 }
             }
             // If there is no paths to go and maze has been reseted many times (multiplication between width and height), exit the maze (no exit found)
-            else if ((availableDirections[0] == false && availableDirections[1] == false && availableDirections[2] == false && availableDirections[3] == false) && 
-            tries > arrayToSolve[0].length) {
+            else if (stuck && tries > arrayToSolve[0].length) {
                 System.out.println("There is no exit");
                 return;
             }
 
             // If maze got reseted, skip this block
-            if (mazeReseted == false) {
+            if (!mazeReseted) {
                 int direction;
                 // Randomize and choose direction to move
-                while (directionSelected != true) {
+                while (!directionSelected) {
                     direction = rand.nextInt(4);
                     switch (direction) {
                         case 0: // Direction up
-                            if(availableDirections[0] == true) {
+                            if(availableDirections[0]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y -= 1;
                                 directionSelected = true;
@@ -99,7 +94,7 @@ public class SolveClass {
                             }
                             break;
                         case 1: // Direction right
-                            if(availableDirections[1] == true) {
+                            if(availableDirections[1]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x += 1;
                                 directionSelected = true;
@@ -107,7 +102,7 @@ public class SolveClass {
                             }
                             break;
                         case 2: // Direction down
-                            if(availableDirections[2] == true) {
+                            if(availableDirections[2]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y += 1;
                                 directionSelected = true;
@@ -115,7 +110,7 @@ public class SolveClass {
                             }
                             break;
                         case 3: // Direction left
-                            if(availableDirections[3] == true) {
+                            if(availableDirections[3]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x -= 1;
                                 directionSelected = true;
@@ -142,7 +137,7 @@ public class SolveClass {
     }
 
     // For Aleksey and Daniil
-    /* TO DO: Create an algorithm that takes the path of zeros upon encountering the dead-end. 
+    /* TODO: Create an algorithm that takes the path of zeros upon encountering the dead-end.
     *  When encountering a multiple paths, randomly choose the path that will be taken.
     *  Reset from (0, 0), if there is no more available paths to go.
     *  Use received information about failed paths and choose other path to go randomly. */
@@ -174,6 +169,7 @@ public class SolveClass {
         while(insideMaze) {
             // Boolean variable to reset each time, when loop starts (set to true, when maze get reseted)
             mazeReseted = false;
+            int max_resets = arrayToSolve[0].length * arrayToSolve.length;
 
             // Check if near cells can be zeros
             for(int i = 0; i < 4; i++) {
@@ -205,9 +201,11 @@ public class SolveClass {
                 }
             }
 
+            // We can't go anywhere...
+            boolean stuck = !availableDirections[0] && !availableDirections[1] && !availableDirections[2] && !availableDirections[3];
+
             // If there is no paths to go, reset the position, reset the maze and increment the tries (replace exit from the intersection with a wall, if there was one)
-            if ((availableDirections[0] == false && availableDirections[1] == false && availableDirections[2] == false && availableDirections[3] == false) &&
-            tries <= arrayToSolve[0].length * arrayToSolve.length) {
+            if (stuck && tries <= max_resets) {
                 mazeReseted = true;
                 currentPos.x = 0;
                 currentPos.y = 0;
@@ -219,27 +217,24 @@ public class SolveClass {
                     backupArray[intersectionExit.y][intersectionExit.x] = 1;
                 
                     for (int i = 0; i < arrayToSolve.length; i++) {
-                    for (int j = 0; j < arrayToSolve[0].length; j++) {
-                        arrayToSolve[i][j] = backupArray[i][j];
-                    }
+                        System.arraycopy(backupArray[i], 0, arrayToSolve[i], 0, arrayToSolve[0].length);
                 }
             }
-            // If there is no paths to go and maze has been reseted many times (multiplication between width and height), exit the maze (no exit found)
-            else if ((availableDirections[0] == false && availableDirections[1] == false && availableDirections[2] == false && availableDirections[3] == false) && 
-            tries > arrayToSolve[0].length * arrayToSolve.length) {
+            // If there is no paths to go and maze has been reset too many times (multiplication between width and height), exit the maze (no exit found)
+            else if (stuck) {
                 System.out.println("There is no exit");
                 return;
             }
 
-            // If maze got reseted, skip this block
-            if (mazeReseted == false) {
+            // If the maze got reset, skip this block
+            if (!mazeReseted) {
                 int direction;
                 // Randomize and choose direction to move
-                while (directionSelected != true) {
+                while (!directionSelected) {
                     direction = rand.nextInt(4);
                     switch (direction) {
                         case 0: // Direction up
-                            if(availableDirections[0] == true) {
+                            if(availableDirections[0]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y -= 1;
                                 directionSelected = true;
@@ -252,7 +247,7 @@ public class SolveClass {
                             }
                             break;
                         case 1: // Direction right
-                            if(availableDirections[1] == true) {
+                            if(availableDirections[1]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x += 1;
                                 directionSelected = true;
@@ -265,7 +260,7 @@ public class SolveClass {
                             }
                             break;
                         case 2: // Direction down
-                            if(availableDirections[2] == true) {
+                            if(availableDirections[2]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y += 1;
                                 directionSelected = true;
@@ -278,7 +273,7 @@ public class SolveClass {
                             }
                             break;
                         case 3: // Direction left
-                            if(availableDirections[3] == true) {
+                            if(availableDirections[3]) {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x -= 1;
                                 directionSelected = true;
@@ -317,6 +312,8 @@ public class SolveClass {
     *  Register the tried paths to use this information and choose other path. 
     */
     public void RealLifeApproachSolve(int[][] arrayToSolve) {
+
+
         System.out.println("Well not implemented");
     }
 }
