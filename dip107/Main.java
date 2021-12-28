@@ -61,7 +61,7 @@ public class Main {
             labyrinth.array[r - 1][k - 1] = 0;
         } else if (answer == 'y') {
             int methodNum = 0;
-            System.out.print("generate method number (1-2): ");
+            System.out.print("Maze generation method (1-2): ");
 
             if (sc.hasNextInt()) {
                 methodNum = sc.nextInt();
@@ -84,10 +84,10 @@ public class Main {
             labyrinth.array[r - 1][k - 1] = 0;
 
 
-            System.out.print("Pretty print the maze? (y/n) ");
+            System.out.print("Pretty print the maze? (y/n)");
 
             if (sc.hasNextLine()) {
-                answer = sc.nextLine().charAt(0);
+                answer = sc.next().charAt(0);
             } else {
                 System.out.println("input error");
                 System.exit(1);
