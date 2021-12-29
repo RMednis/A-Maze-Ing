@@ -1,8 +1,10 @@
 package dip107;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Stack;
 
 
 public class LabyrinthClass {
@@ -10,7 +12,7 @@ public class LabyrinthClass {
     public int rindas;
     public int kolonnas;
     public boolean solved = false;
-    public LinkedList<Point> path = new LinkedList<Point>();
+    public LinkedList<Point> path = new LinkedList<>();
 
     private static final Random rand = new Random();
 

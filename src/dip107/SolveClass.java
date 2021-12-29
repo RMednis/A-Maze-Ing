@@ -2,8 +2,11 @@ package dip107;
 
 import java.awt.Point;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Stack;
+
 import dip107.LabyrinthClass;
 
 public class SolveClass {
@@ -16,6 +19,7 @@ public class SolveClass {
     public void RandomSolve(LabyrinthClass Labyrinth) {
 
         int[][] arrayToSolve = Labyrinth.array;
+        Labyrinth.path.clear();
         LinkedList<Point> path = Labyrinth.path;
 
         int tries = 0;
@@ -34,8 +38,8 @@ public class SolveClass {
             System.arraycopy(arrayToSolve[i], 0, backupArray[i], 0, arrayToSolve[0].length);
         }
 
-        // Create a variable to store a path
-        path.add(currentPos);
+        // Store the first coord
+        path.add((Point) currentPos.clone());;
 
         // Go through loop while point is inside the maze
         while (insideMaze) {
@@ -72,9 +76,12 @@ public class SolveClass {
             // If there is no paths to go, reset the position, reset the maze and increment the tries
             if (stuck && tries <= arrayToSolve[0].length * arrayToSolve.length) {
                 mazeReset = true;
-                currentPos.x = 0;
-                currentPos.y = 0;
-                path.add(currentPos);
+                currentPos.setLocation(0,0);
+
+                // Clear the path
+                path.clear();
+                path.add((Point) currentPos.clone());
+
                 tries++;
                 for (int i = 0; i < arrayToSolve.length; i++) {
                     System.arraycopy(backupArray[i], 0, arrayToSolve[i], 0, arrayToSolve[0].length);
@@ -98,7 +105,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y -= 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());
                             }
                             break;
                         case 1: // Direction right
@@ -106,7 +113,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x += 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());
                             }
                             break;
                         case 2: // Direction down
@@ -114,7 +121,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y += 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());
                             }
                             break;
                         case 3: // Direction left
@@ -122,7 +129,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x -= 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());;
                             }
                             break;
                     }
@@ -134,6 +141,7 @@ public class SolveClass {
                 availableDirections[2] = false;
                 availableDirections[3] = false;
                 directionSelected = false;
+                path.clear();
             }
 
             // If point is equal to the end point, exit the cycle
@@ -152,6 +160,7 @@ public class SolveClass {
     public void TryOutEverythingSolve(LabyrinthClass Labyrinth) {
 
         int[][] arrayToSolve = Labyrinth.array;
+        Labyrinth.path.clear();
         LinkedList<Point> path = Labyrinth.path;
 
         int tries = 0;
@@ -163,6 +172,7 @@ public class SolveClass {
         Point currentPos = new Point(0, 0);
         Point intersectionExit = new Point(0, 0);
 
+
         // Creating an array for storing original values
         int[][] backupArray = new int[arrayToSolve.length][arrayToSolve[0].length];
 
@@ -173,14 +183,15 @@ public class SolveClass {
             }
         }
 
-        // Create a variable to store a path
-        path.add(currentPos);
+        // Store the first coord
+        path.add((Point) currentPos.clone());
 
         // Go through loop while point is inside the maze
         while (insideMaze) {
             // Boolean variable to reset each time, when loop starts (set to true, when maze get reset)
             mazeReseted = false;
             int max_resets = arrayToSolve[0].length * arrayToSolve.length;
+
 
             // Check if near cells can be zeros
             for (int i = 0; i < 4; i++) {
@@ -218,10 +229,13 @@ public class SolveClass {
             // If there is no paths to go, reset the position, reset the maze and increment the tries (replace exit from the intersection with a wall, if there was one)
             if (stuck && tries <= max_resets) {
                 mazeReseted = true;
-                currentPos.x = 0;
-                currentPos.y = 0;
-                path.add(currentPos);
-                tries++;
+                currentPos.setLocation(0,0);
+
+                // Clear the path
+                path.clear();
+                path.add((Point) currentPos.clone());
+
+                tries++; // Increment tries
                 pathsToGo = 0;
 
                 if (intersectionExit.y != 0 && intersectionExit.x != 0)
@@ -249,7 +263,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y -= 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());
 
                                 if (pathsToGo >= 2) {
                                     intersectionExit.x = currentPos.x;
@@ -262,7 +276,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x += 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());
 
                                 if (pathsToGo >= 2) {
                                     intersectionExit.x = currentPos.x;
@@ -275,7 +289,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.y += 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());
 
                                 if (pathsToGo >= 2) {
                                     intersectionExit.x = currentPos.x;
@@ -288,7 +302,7 @@ public class SolveClass {
                                 arrayToSolve[currentPos.y][currentPos.x] = 1;
                                 currentPos.x -= 1;
                                 directionSelected = true;
-                                path.add(currentPos);
+                                path.add((Point) currentPos.clone());
 
                                 if (pathsToGo >= 2) {
                                     intersectionExit.x = currentPos.x;
@@ -317,7 +331,7 @@ public class SolveClass {
     }
 
     // For Alexander and Reinis
-    /* TO DO: Create an algorithm that takes the path of zeros upon encountering the dead-end.
+    /* TODO: Create an algorithm that takes the path of zeros upon encountering the dead-end.
      *  When encountering a multiple paths, randomly choose the path that will be taken.
      *  If there is no more available paths to go, return to the previous intersection of multiple paths.
      *  Register the tried paths to use this information and choose other path.
@@ -328,12 +342,12 @@ public class SolveClass {
         LinkedList<Point> path = Labyrinth.path;
 
         Point current_pos = new Point(0, 0);
-        LinkedList<Point> previous_intersections = new LinkedList<Point>();
+        Stack<Point> previous_intersections = new Stack<Point>();
 
         while (!Labyrinth.solved) {
 
             boolean[] available_directions = {false, false, false, false};
-            int directions_avaialble_total = 0;
+            int directions_available_total = 0;
 
             // Check nearby cells to see where we can move to
             for (int direction_id = 0; direction_id < 4; direction_id++) {
@@ -342,39 +356,39 @@ public class SolveClass {
                     case 0: // Top element
                         if (current_pos.y != 0 && arrayToSolve[current_pos.y - 1][current_pos.x] == 0) {
                             available_directions[0] = true;
-                            directions_avaialble_total++;
+                            directions_available_total++;
                         }
                         break;
 
                     case 1: // Right element
                         if (current_pos.x != arrayToSolve[current_pos.y].length - 1 && arrayToSolve[current_pos.y][current_pos.x + 1] == 0) {
                             available_directions[1] = true;
-                            directions_avaialble_total++;
+                            directions_available_total++;
                         }
                         break;
                     case 2: // Bottom element
                         if (current_pos.y != arrayToSolve.length - 1 && arrayToSolve[current_pos.y + 1][current_pos.x] == 0) {
                             available_directions[2] = true;
-                            directions_avaialble_total++;
+                            directions_available_total++;
                         }
                         break;
 
                     case 3: // Left element
                         if (current_pos.x != 0 && arrayToSolve[current_pos.y][current_pos.x - 1] == 0) {
                             available_directions[3] = true;
-                            directions_avaialble_total++;
+                            directions_available_total++;
                         }
                         break;
                 }
             }
 
-            if (directions_avaialble_total > 1) { // This is an intersection.... we should save it!
+            if (directions_available_total > 1) { // This is an intersection.... we should save it!
                 if (!previous_intersections.isEmpty()) {
-                    if (!(previous_intersections.getFirst() == current_pos)) {
-                        previous_intersections.push(current_pos); // Add it to the list!
+                    if (!(previous_intersections.firstElement() == current_pos)) {
+                        previous_intersections.push(new Point(current_pos)); // Add it to the list!
                     }
                 } else {
-                    previous_intersections.push(current_pos); // Add it to the list!}
+                    previous_intersections.push(current_pos.getLocation()); // Add it to the list!
                 }
             }
 
@@ -404,28 +418,28 @@ public class SolveClass {
                 switch (direction) {
                     case 0:
                         if (available_directions[0]) {
-                            path.push(current_pos);
+                            path.add((Point) current_pos.clone());
                             current_pos.y -= 1;
                             direction_selected = true;
                         }
                         break;
                     case 1:
                         if (available_directions[1]) {
-                            path.push(current_pos);
+                            path.add((Point) current_pos.clone());
                             current_pos.x += 1;
                             direction_selected = true;
                         }
                         break;
                     case 2:
                         if (available_directions[2]) {
-                            path.push(current_pos);
+                            path.add((Point) current_pos.clone());
                             current_pos.y += 1;
                             direction_selected = true;
                         }
                         break;
                     case 3:
                         if (available_directions[3]) {
-                            path.push(current_pos);
+                            path.add((Point) current_pos.clone());
                             current_pos.x -= 1;
                             direction_selected = true;
                         }
