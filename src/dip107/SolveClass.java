@@ -342,7 +342,7 @@ public class SolveClass {
         LinkedList<Point> path = Labyrinth.path;
 
         Point current_pos = new Point(0, 0);
-        Stack<Point> previous_intersections = new Stack<Point>();
+        LinkedList<Point> previous_intersections = new LinkedList<Point>();
 
         while (!Labyrinth.solved) {
 
@@ -384,11 +384,11 @@ public class SolveClass {
 
             if (directions_available_total > 1) { // This is an intersection.... we should save it!
                 if (!previous_intersections.isEmpty()) {
-                    if (!(previous_intersections.firstElement() == current_pos)) {
-                        previous_intersections.push(new Point(current_pos)); // Add it to the list!
+                    if (!(previous_intersections.getFirst() == current_pos)) {
+                        previous_intersections.push((Point) current_pos.clone()); // Add it to the list!
                     }
                 } else {
-                    previous_intersections.push(current_pos.getLocation()); // Add it to the list!
+                    previous_intersections.push((Point) current_pos.clone()); // Add it to the list!
                 }
             }
 
@@ -403,10 +403,14 @@ public class SolveClass {
                     current_pos = previous_intersections.pop(); // Go back to the previous intersection
 
                     // Clear the current path until the last intersection!
-                    for (int path_to_remove = path.size() - 1; path.get(path_to_remove) != current_pos; path_to_remove--) {
-                        path.remove(path_to_remove);
+                    for (int path_to_remove = path.size() - 1; path_to_remove > 0; path_to_remove--) {
+                        Point current_removed_path = path.get(path_to_remove);
+                        if (current_removed_path != current_pos) {
+                            path.remove(path_to_remove);
+                        };
                     }
                 } else {
+                    System.out.println(Labyrinth.array.toString());
                     Labyrinth.solved = false; // Could not find an exit...
                     return;
                 }
@@ -414,6 +418,7 @@ public class SolveClass {
 
             boolean direction_selected = false;
             while (!direction_selected) {
+                if (stuck) break;
                 int direction = rand.nextInt(4); // Randomly select a direction!
                 switch (direction) {
                     case 0:
@@ -444,11 +449,13 @@ public class SolveClass {
                             direction_selected = true;
                         }
                         break;
+
                 }
             }
-        }
-        if ((current_pos.y == arrayToSolve.length - 1) && (current_pos.x == arrayToSolve[current_pos.y].length - 1)) {
-            Labyrinth.solved = true; // Found an exit!
+            if ((current_pos.y == arrayToSolve.length - 1) && (current_pos.x == arrayToSolve[current_pos.y].length - 1)) {
+                path.add((Point) current_pos.clone());
+                Labyrinth.solved = true; // Found an exit!
+            }
         }
     }
 
