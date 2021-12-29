@@ -28,3 +28,15 @@ hs_err_pid*
 # IDEA configuration files
 /.idea/
 *.iml
+
+# Gradle
+.gradle
+/build/
+
+gradle-app.setting
+
+# Don't ignore the wrapper though
+!gradle-wrapper.jar
+
+# Project cahce and stuff
+.gradletasknamecache
