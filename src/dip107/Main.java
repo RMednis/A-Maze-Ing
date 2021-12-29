@@ -10,37 +10,25 @@ public class Main {
         int k;
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("-- Main Maze Settings --");
-        System.out.print("Row count: ");
-        r = numberCheck(sc);
-
-        System.out.print("Column count: ");
-        k = numberCheck(sc);
-
-
-        System.out.println("-- Fill Options --");
-        sc.nextLine();
-        System.out.print("Autofill the maze? (y/n) ");
+        r = numberCheck(sc, "Row count: ");
+        k = numberCheck(sc, "Column count: ");
 
         LabyrinthClass labyrinth = new LabyrinthClass(r, k);
         SolveClass solver = new SolveClass();
 
-        if (!yesNoCheck(sc)) { // Manual entry
-            System.out.println("-- Manual Entry Mode --");
+        if (!yesNoCheck(sc,"Autofill the maze? (y/n): ")) { // Manual entry
             for (int i = 0; i < r; i++) {
                 System.out.println("- Row " + (i + 1));
                 for (int j = 0; j < k; j++) {
-                    System.out.print((j + 1) + ":");
-                    labyrinth.array[i][j] = numberCheck(sc);
+                    labyrinth.array[i][j] = numberCheck(sc, (j + 1) + ":");
                 }
             }
             // Setting up start and ending
             labyrinth.array[0][0] = 0;
             labyrinth.array[r - 1][k - 1] = 0;
         } else { // Automatic maze generation
-            System.out.print("Maze generation method (1-2): ");
 
-            switch (numberCheck(sc)) {
+            switch (numberCheck(sc, "Maze generation method (1-2): ")) {
                 case 1 -> labyrinth.GenerateLabyrinth(1);
                 case 2 -> labyrinth.GenerateLabyrinth(2);
                 default -> inputError();
@@ -51,9 +39,7 @@ public class Main {
         labyrinth.array[0][0] = 0;
         labyrinth.array[r - 1][k - 1] = 0;
 
-        System.out.print("Pretty print the maze? (y/n) ");
-
-        boolean pretty = yesNoCheck(sc);
+        boolean pretty = yesNoCheck(sc,"Pretty print the maze? (y/n): ");
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < k; j++) {
 
@@ -75,10 +61,7 @@ public class Main {
             }
         }
 
-        System.out.println("-- Solving Options --");
-        System.out.print("Method number (1-3): ");
-
-        switch (numberCheck(sc)) {
+        switch (numberCheck(sc,"Method number (1-3): " )) {
             case 1 -> solver.RandomSolve(labyrinth);
             case 2 -> solver.TryOutEverythingSolve(labyrinth);
             case 3 -> solver.RealLifeApproachSolve(labyrinth);
@@ -86,7 +69,6 @@ public class Main {
         }
 
         System.out.println("results:");
-
 
         // Printing the maze once it's been solved (or not)
         if (labyrinth.solved) {
@@ -109,7 +91,8 @@ public class Main {
         }
     }
 
-    private static boolean yesNoCheck(Scanner sc) {
+    private static boolean yesNoCheck(Scanner sc, String question) {
+        System.out.print(question);
         if (sc.hasNextLine()) {
             char input = sc.next().charAt(0);
             switch (input) {
@@ -118,22 +101,26 @@ public class Main {
                 case 'n':
                     return false;
                 default: {
-                    inputError();
-                    return false;
+                    sc.nextLine();
+                    System.out.println("input error \n");
+                    return yesNoCheck(sc, question);
                 }
             }
         } else {
-            inputError();
-            return false;
+            sc.nextLine();
+            System.out.println("input error \n");
+            return yesNoCheck(sc, question);
         }
     }
 
-    private static int numberCheck(Scanner sc) {
+    private static int numberCheck(Scanner sc, String question) {
+        System.out.print(question);
         if (sc.hasNextInt()) {
             return sc.nextInt();
         } else {
-            inputError();
-            return 0;
+            sc.nextLine();
+            System.out.println("input error \n");
+            return numberCheck(sc, question);
         }
     }
 
