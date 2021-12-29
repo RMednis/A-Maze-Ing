@@ -2,10 +2,7 @@ package dip107;
 
 import java.awt.Point;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 import dip107.LabyrinthClass;
 
@@ -342,7 +339,8 @@ public class SolveClass {
         LinkedList<Point> path = Labyrinth.path;
 
         Point current_pos = new Point(0, 0);
-        LinkedList<Point> previous_intersections = new LinkedList<Point>();
+        LinkedList<Point> previous_intersections = new LinkedList<Point>(); // Used to store the intersection coords
+        LinkedList<Integer> intersections_path = new LinkedList<Integer>(); // Used to store the last path element before the intersection
 
         while (!Labyrinth.solved) {
 
@@ -386,6 +384,7 @@ public class SolveClass {
                 if (!previous_intersections.isEmpty()) {
                     if (!(previous_intersections.getFirst() == current_pos)) {
                         previous_intersections.push((Point) current_pos.clone()); // Add it to the list!
+                        intersections_path.push(path.size());
                     }
                 } else {
                     previous_intersections.push((Point) current_pos.clone()); // Add it to the list!
@@ -402,13 +401,13 @@ public class SolveClass {
 
                     current_pos = previous_intersections.pop(); // Go back to the previous intersection
 
+
                     // Clear the current path until the last intersection!
-                    for (int path_to_remove = path.size() - 1; path_to_remove > 0; path_to_remove--) {
-                        Point current_removed_path = path.get(path_to_remove);
-                        if (current_removed_path != current_pos) {
-                            path.remove(path_to_remove);
-                        };
+                    Integer last_intersection_size = intersections_path.removeFirst();
+                    while (path.size() > last_intersection_size) {
+                        path.removeLast();
                     }
+
                 } else {
                     System.out.println(Labyrinth.array.toString());
                     Labyrinth.solved = false; // Could not find an exit...

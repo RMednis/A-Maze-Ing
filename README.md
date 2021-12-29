@@ -21,5 +21,6 @@ ejam atpakaļ uz iepriekšējo krustojumu.
 - [ ] Jāpāriet pāri SolveClass funkcijām, iespējams tās var padarīt smukākas.
 - [ ] Jauns ģenerātors priekš labirintiem.
 - [ ] Iespējams izmantot vēl vienu risinājuma metodi (?!)
+- [x] Salabot RealWorldSolve printēšanu
 
 Licencēts zem MIT licenses, vairāk informācijas LICENSE failā.
