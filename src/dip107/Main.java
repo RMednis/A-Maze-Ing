@@ -4,12 +4,12 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class Main {
-    public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         int r;
         int k;
 
+        Scanner sc = new Scanner(System.in);
         System.out.print("row count: ");
         r = numberCheck(sc);
 
@@ -19,12 +19,10 @@ public class Main {
         sc.nextLine();
         System.out.print("Autofill the maze? (y/n) ");
 
-        boolean answer = yesNoCheck(sc);
-
         LabyrinthClass labyrinth = new LabyrinthClass(r, k);
         SolveClass solver = new SolveClass();
 
-        if (!answer) {
+        if (!yesNoCheck(sc)) { // Manual entry
             for (int i = 0; i < r; i++) {
                 for (int j = 0; j < k; j++) {
                     labyrinth.array[i][j] = numberCheck(sc);
@@ -33,16 +31,13 @@ public class Main {
             // Setting up start and ending
             labyrinth.array[0][0] = 0;
             labyrinth.array[r - 1][k - 1] = 0;
-        } else {
+        } else { // Automatic maze generation
             System.out.print("Maze generation method (1-2): ");
 
             switch (numberCheck(sc)) {
                 case 1 -> labyrinth.GenerateLabyrinth(1);
                 case 2 -> labyrinth.GenerateLabyrinth(2);
-                default -> {
-                    System.out.println("input error");
-                    System.exit(1);
-                }
+                default -> inputError();
             }
 
             // Setting up start and ending
@@ -52,12 +47,11 @@ public class Main {
 
             System.out.print("Pretty print the maze? (y/n) ");
 
-            answer = yesNoCheck(sc);
-
+            boolean pretty = yesNoCheck(sc);
             for (int i = 0; i < r; i++) {
                 for (int j = 0; j < k; j++) {
 
-                    if (answer) { // Pretty print the maze using block characters
+                    if (pretty) { // Pretty print the maze using block characters
                         if (labyrinth.array[i][j] == 1) {
                             System.out.print("▉");
                         } else {
@@ -81,10 +75,7 @@ public class Main {
                 case 1 -> solver.RandomSolve(labyrinth);
                 case 2 -> solver.TryOutEverythingSolve(labyrinth);
                 case 3 -> solver.RealLifeApproachSolve(labyrinth);
-                default -> {
-                    System.out.println("input error");
-                    System.exit(1);
-                }
+                default -> inputError();
             }
 
             System.out.println("results:");
@@ -114,32 +105,34 @@ public class Main {
         }
     }
 
-    public static boolean yesNoCheck(Scanner sc) {
+    private static boolean yesNoCheck(Scanner sc) {
         if (sc.hasNextLine()) {
             char input = sc.next().charAt(0);
             switch (input) {
                 case 'y': return true;
                 case 'n': return false;
                 default: {
-                    System.out.println("input error");
-                    System.exit(1);
+                    inputError();
                     return false;
                 }
             }
         } else {
-            System.out.println("input error");
-            System.exit(1);
+            inputError();
             return false;
         }
     }
 
-    public static int numberCheck(Scanner sc) {
+    private static int numberCheck(Scanner sc) {
         if (sc.hasNextInt()) {
             return sc.nextInt();
         } else {
-            System.out.println("input error");
-            System.exit(1);
+            inputError();
             return 0;
         }
+    }
+
+    private static void inputError() {
+        System.out.println("input error");
+        System.exit(1);
     }
 }

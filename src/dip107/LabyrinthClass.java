@@ -24,16 +24,19 @@ public class LabyrinthClass {
     }
 
     public void GenerateLabyrinth(int number) {
-        if (number == 1) {
-            //Complete Random
-            for (int i = 0; i < rindas; i++) {
-                for (int j = 0; j < kolonnas; j++) {
-                    array[i][j] = rand.nextInt(2);
+        switch (number) {
+            case 1: {
+                //Complete Random
+                for (int i = 0; i < rindas; i++) {
+                    for (int j = 0; j < kolonnas; j++) {
+                        array[i][j] = rand.nextInt(2);
+                    }
                 }
             }
-        } else if (number == 2) {
-            // Structured Random
-            RandomFill(array);
+            case 2: {
+                // Structured Random
+                RandomFill(array);
+            }
         }
     }
 
