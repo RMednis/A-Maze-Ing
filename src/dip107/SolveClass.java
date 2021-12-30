@@ -138,7 +138,6 @@ public class SolveClass {
                 availableDirections[2] = false;
                 availableDirections[3] = false;
                 directionSelected = false;
-                path.clear();
             }
 
             // If point is equal to the end point, exit the cycle
